@@ -45,14 +45,38 @@ int measureTemp() {
 }
 
 boolean ifPressed() {
-  if (digitalRead(plusButton) != 0 or digitalRead(minusButton) != 0)
+  if (digitalRead(plusButton) == true or digitalRead(minusButton) == true)
     return true;
   else
     return false;
 }
 
-void hysteresisChange(){
+void setTempChange() {
+}
+
+void displayInfo() {
+  TurnOn();
+  //display on the lcd
+  for (int i = 0; i < 10; i++) {
+    lcd.setCursor(0, 1);
+    lcd.print("Set Temp:");
+    lcd.setCursor(9, 1);
+    lcd.print(setTemp);
+    lcd.setCursor(0, 0);
+    lcd.print("Cur Temp:");
+    lcd.setCursor(9, 0);
+    lcd.print(measureTemp());
+    if (digitalRead(plusButton) == true) {
+      setTemp++;
+      lcd.setCursor(9, 1);
+      lcd.print(setTemp);
+      i=0;
+    }
+    delay(100);
   }
+
+  TurnOff();
+}
 
 
 void setup()
@@ -65,8 +89,7 @@ void setup()
   lcd.init();
 
   // start lcd
-TurnOn();
-
+  displayInfo();
 }
 
 
@@ -79,14 +102,7 @@ void loop()
   if ((measureTemp() + hist) < setTemp) {
     stopCooling();
   }
-  //display on the lcd
-   lcd.setCursor(0, 1);
-    lcd.print("Set Temp:");
-    lcd.setCursor(9,1);
-    lcd.print(setTemp);
-   lcd.setCursor(0,0);
-   lcd.print("Cur Temp:");
-   lcd.setCursor(9,0);
-   lcd.print(measureTemp());
-  
+  if (ifPressed() == true) {
+    displayInfo();
+  }
 }
