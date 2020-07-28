@@ -14,7 +14,7 @@ LiquidCrystal_I2C lcd(0x27, 16, 2);
 //var definitions
 int hist = 2; //hysteresis
 int setTemp = 10; //default set temperature after startup
-
+int mTemp;
 
 //pin definitions
 int coolPin = 4;
@@ -57,15 +57,24 @@ void setTempChange() {
 void displayInfo() {
   TurnOn();
   //display on the lcd
-  for (int i = 0; i < 10; i++) {
+  for (int i = 0; i < 30; i++) {
     lcd.setCursor(0, 1);
     lcd.print("Set Temp:");
     lcd.setCursor(9, 1);
+    if (setTemp<10){
+      lcd.print("    ");
+      lcd.setCursor(9,1);}
     lcd.print(setTemp);
+    lcd.print((char)223);
     lcd.setCursor(0, 0);
     lcd.print("Cur Temp:");
     lcd.setCursor(9, 0);
-    lcd.print(measureTemp());
+    if (mTemp<10){
+      lcd.print("    ");
+       lcd.setCursor(9,0);}
+    lcd.print(mTemp);
+    lcd.print((char)223);
+    
     if (digitalRead(plusButton) == true) {
       setTemp++;
       lcd.setCursor(9, 1);
@@ -78,7 +87,7 @@ void displayInfo() {
       lcd.print(setTemp);
       i=0;
     }
-    delay(100);
+    delay(400);
   }
 
   TurnOff();
@@ -95,17 +104,19 @@ void setup()
   lcd.init();
 
   // start lcd
+    mTemp=measureTemp();
   displayInfo();
 }
 
 
 void loop()
 {
+  mTemp=measureTemp();
   //measure temperature (main fridge process)
-  if ((measureTemp() + hist) > setTemp) {
+  if ((mTemp + hist) > setTemp) {
     coolMe();
   }
-  if ((measureTemp() + hist) < setTemp) {
+  if ((mTemp + hist) < setTemp) {
     stopCooling();
   }
   if (ifPressed() == true) {
