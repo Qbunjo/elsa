@@ -72,6 +72,12 @@ void displayInfo() {
       lcd.print(setTemp);
       i=0;
     }
+    if (digitalRead(minusButton) == true) {
+      setTemp--;
+      lcd.setCursor(9, 1);
+      lcd.print(setTemp);
+      i=0;
+    }
     delay(100);
   }
 
