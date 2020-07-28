@@ -116,7 +116,7 @@ void loop()
   if ((mTemp + hist) > setTemp) {
     coolMe();
   }
-  if ((mTemp + hist) < setTemp) {
+  if ((mTemp - hist) < setTemp) {
     stopCooling();
   }
   if (ifPressed() == true) {
