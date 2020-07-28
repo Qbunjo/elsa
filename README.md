@@ -1,5 +1,5 @@
-# fridge  
-fridge is a simple arduino driver for camping fridge.  
+# elsa 
+elsa is a simple arduino driver for camping fridge.  
 The fridge is cooled by peltier module and powered from an old car battery.  
 Temperature is measured by Dallas thermometer.
 ## basic principles  
